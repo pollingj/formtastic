@@ -1273,7 +1273,7 @@ module Formtastic #:nodoc:
         # Ruby 1.9: String#to_s behavior changed, need to make an explicit join.
         contents = contents.join if contents.respond_to?(:join)
         fieldset = template.content_tag(:fieldset,
-          legend << @@item_separator == :li ? template.content_tag(:ol, contents) : contents,
+          legend << (@@item_separator == :li ? template.content_tag(:ol, contents) : contents),
           html_options.except(:builder, :parent)
         )
 
@@ -1305,7 +1305,7 @@ module Formtastic #:nodoc:
             template.content_tag(:legend,
                 self.label(method, options_for_label(options).merge(:for => options.delete(:label_for))), :class => 'label'
               ) <<
-              @@item_separator == :li ? template.content_tag(:ol, contents) : contents
+              (@@item_separator == :li ? template.content_tag(:ol, contents) : contents)
           )
       end
 
