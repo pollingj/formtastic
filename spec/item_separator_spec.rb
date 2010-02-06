@@ -12,7 +12,7 @@ describe 'SemanticFormBuilder#item_separator' do
   
   describe 'when @@item_separator is default (:li)' do 
 
-    it 'should render inputs and buttons wrapped in li tags and wrapping in ol tag' do
+    it 'should render inputs and buttons wrapped in li tags with wrapping ol tag' do
       render_form
       
       output_buffer.should have_tag("form > fieldset > ol > li")
@@ -21,7 +21,7 @@ describe 'SemanticFormBuilder#item_separator' do
   
   describe 'when @@item_separator is set to :div' do
     
-    it 'should render inputs and buttons wrapped in div tags and have not wrapping ol tag' do
+    it 'should render inputs and buttons wrapped in div tags and have no wrapping ol tag' do
       ::Formtastic::SemanticFormBuilder.item_separator = :div
       
       render_form
