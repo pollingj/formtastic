@@ -44,6 +44,10 @@
 # customize it doing just as below:
 # Formtastic::SemanticFormBuilder.inline_order = [:input, :hints, :errors]
 
+# Formtastic by default renders inside li tags you can customize it to render
+# with div tags if required
+Formtastic::SemanticFormBuilder.item_separator = :div
+
 # Specifies if labels/hints for input fields automatically be looked up using I18n.
 # Default value: false. Overridden for specific fields by setting value to true,
 # i.e. :label => true, or :hint => true (or opposite depending on initialized value)

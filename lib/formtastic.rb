@@ -20,10 +20,11 @@ module Formtastic #:nodoc:
     @@priority_currencies = ["US Dollar", "Euro"]
     @@i18n_lookups_by_default = false
     @@default_commit_button_accesskey = nil
+    @@item_separator = :div
 
     cattr_accessor :default_text_field_size, :default_text_area_height, :all_fields_required_by_default, :include_blank_for_select_by_default,
                    :required_string, :optional_string, :inline_errors, :label_str_method, :collection_label_methods,
-                   :inline_order, :file_methods, :priority_countries, :priority_currencies, :i18n_lookups_by_default, :default_commit_button_accesskey
+                   :inline_order, :file_methods, :priority_countries, :priority_currencies, :i18n_lookups_by_default, :default_commit_button_accesskey, :item_separator
 
     RESERVED_COLUMNS = [:created_at, :updated_at, :created_on, :updated_on, :lock_version, :version]
 
@@ -99,7 +100,7 @@ module Formtastic #:nodoc:
         send(:"inline_#{type}_for", method, options)
       end.compact.join("\n")
 
-      return template.content_tag(:li, list_item_content, wrapper_html)
+      return template.content_tag(@@item_separator, list_item_content, wrapper_html)
     end
 
     # Creates an input fieldset and ol tag wrapping for use around a set of inputs.  It can be
@@ -328,7 +329,7 @@ module Formtastic #:nodoc:
       element_class = ['commit', options.delete(:class)].compact.join(' ') # TODO: Add class reflecting on form action.
       accesskey = (options.delete(:accesskey) || @@default_commit_button_accesskey) unless button_html.has_key?(:accesskey)
       button_html = button_html.merge(:accesskey => accesskey) if accesskey
-      template.content_tag(:li, self.submit(text, button_html), :class => element_class)
+      template.content_tag(@@item_separator, self.submit(text, button_html), :class => element_class)
     end
 
     # A thin wrapper around #fields_for to set :builder => Formtastic::SemanticFormBuilder
@@ -438,7 +439,7 @@ module Formtastic #:nodoc:
       return nil if full_errors.blank?
       html_options[:class] ||= "errors"
       template.content_tag(:ul, html_options) do
-        full_errors.map { |error| template.content_tag(:li, error) }.join
+        full_errors.map { |error| template.content_tag(@@item_separator, error) }.join
       end
     end
 
@@ -850,7 +851,7 @@ module Formtastic #:nodoc:
           )
 
           li_options = value_as_class ? { :class => [method.to_s.singularize, value.to_s.downcase].join('_') } : {}
-          template.content_tag(:li, li_content, li_options)
+          template.content_tag(@@item_separator, li_content, li_options)
         end
 
         field_set_and_list_wrapping_for_method(method, options.merge(:label_for => input_ids.first), list_item_content)
@@ -993,7 +994,7 @@ module Formtastic #:nodoc:
             opts = strip_formtastic_options(options).merge(:prefix => @object_name, :field_name => field_name, :default => datetime)
             item_label_text = ::I18n.t(input.to_s, :default => input.to_s.humanize, :scope => [:datetime, :prompts])
 
-            list_items_capture << template.content_tag(:li,
+            list_items_capture << template.content_tag(@@item_separator,
               template.content_tag(:label, item_label_text, :for => input_id) <<
               template.send(:"select_#{input}", datetime, opts, html_options.merge(:id => input_id))
             )
@@ -1105,7 +1106,7 @@ module Formtastic #:nodoc:
           )
 
           li_options = value_as_class ? { :class => [method.to_s.singularize, value.to_s.downcase].join('_') } : {}
-          template.content_tag(:li, li_content, li_options)
+          template.content_tag(@@item_separator, li_content, li_options)
         end
 
         field_set_and_list_wrapping_for_method(method, options.merge(:label_for => input_ids.first), list_item_content)
@@ -1204,7 +1205,7 @@ module Formtastic #:nodoc:
       def error_list(errors) #:nodoc:
         list_elements = []
         errors.each do |error|
-          list_elements <<  template.content_tag(:li, error.untaint)
+          list_elements <<  template.content_tag(@@item_separator, error.untaint)
         end
         template.content_tag(:ul, list_elements.join("\n"), :class => 'errors')
       end
@@ -1272,7 +1273,7 @@ module Formtastic #:nodoc:
         # Ruby 1.9: String#to_s behavior changed, need to make an explicit join.
         contents = contents.join if contents.respond_to?(:join)
         fieldset = template.content_tag(:fieldset,
-          legend << template.content_tag(:ol, contents),
+          legend << @@item_separator == :li ? template.content_tag(:ol, contents) : contents,
           html_options.except(:builder, :parent)
         )
 
@@ -1304,7 +1305,7 @@ module Formtastic #:nodoc:
             template.content_tag(:legend,
                 self.label(method, options_for_label(options).merge(:for => options.delete(:label_for))), :class => 'label'
               ) <<
-            template.content_tag(:ol, contents)
+              @@item_separator == :li ? template.content_tag(:ol, contents) : contents
           )
       end
 
