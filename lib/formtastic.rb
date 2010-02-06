@@ -20,7 +20,7 @@ module Formtastic #:nodoc:
     @@priority_currencies = ["US Dollar", "Euro"]
     @@i18n_lookups_by_default = false
     @@default_commit_button_accesskey = nil
-    @@item_separator = :div
+    @@item_separator = :li
 
     cattr_accessor :default_text_field_size, :default_text_area_height, :all_fields_required_by_default, :include_blank_for_select_by_default,
                    :required_string, :optional_string, :inline_errors, :label_str_method, :collection_label_methods,
@@ -439,7 +439,7 @@ module Formtastic #:nodoc:
       return nil if full_errors.blank?
       html_options[:class] ||= "errors"
       template.content_tag(:ul, html_options) do
-        full_errors.map { |error| template.content_tag(@@item_separator, error) }.join
+        full_errors.map { |error| template.content_tag(:li, error) }.join
       end
     end
 
@@ -1205,7 +1205,7 @@ module Formtastic #:nodoc:
       def error_list(errors) #:nodoc:
         list_elements = []
         errors.each do |error|
-          list_elements <<  template.content_tag(@@item_separator, error.untaint)
+          list_elements <<  template.content_tag(:li, error.untaint)
         end
         template.content_tag(:ul, list_elements.join("\n"), :class => 'errors')
       end

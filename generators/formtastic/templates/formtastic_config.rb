@@ -46,7 +46,7 @@
 
 # Formtastic by default renders inside li tags you can customize it to render
 # with div tags if required
-Formtastic::SemanticFormBuilder.item_separator = :div
+# Formtastic::SemanticFormBuilder.item_separator = :div
 
 # Specifies if labels/hints for input fields automatically be looked up using I18n.
 # Default value: false. Overridden for specific fields by setting value to true,

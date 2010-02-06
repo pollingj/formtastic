@@ -51,6 +51,7 @@ describe 'SemanticFormBuilder#input' do
         before do
           @old_string = ::Formtastic::SemanticFormBuilder.required_string
           @new_string = ::Formtastic::SemanticFormBuilder.required_string = " required yo!" # ensure there's something in the string
+          @item_separator = ::Formtastic::SemanticFormBuilder.item_separator = :li
           @new_post.class.should_not_receive(:reflect_on_all_validations)
         end
 
