@@ -19,7 +19,7 @@ module Formtastic #:nodoc:
     @@priority_countries = ["Australia", "Canada", "United Kingdom", "United States"]
     @@i18n_lookups_by_default = false
     @@default_commit_button_accesskey = nil
-    @@item_separator = :li
+    @@item_separator = :div
 
     cattr_accessor :default_text_field_size, :default_text_area_height, :all_fields_required_by_default, :include_blank_for_select_by_default,
                    :required_string, :optional_string, :inline_errors, :label_str_method, :collection_label_methods,
