@@ -409,7 +409,8 @@ module Formtastic #:nodoc:
       text = (options.delete(:label_prefix_for_nested_input) || "") + text
 
       input_name = options.delete(:input_name) || method
-      super(input_name, text, options)
+      #super(input_name, text, options)
+      super(input_name, text)
     end
 
     # Generates error messages for the given method. Errors can be shown as list,
